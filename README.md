@@ -52,7 +52,7 @@ La galerie permet aussi de rechercher dans les titres, descriptions et catégori
 
 - Modifie les titres, descriptions, catégories ou dates d’ajout (`uploadedAt`) dans le tableau `photos` de `script.js`.
 - Les filtres disponibles sont « Tout », « Portrait », « Urbain » et « Favoris ».
-- Les liens de contact dans `index.html` ouvrent l’adresse `heritierbambu00@gmail.com` et le numéro `+243 814 313 997`. Adapte-les si tes coordonnées changent.
+- Les boutons de contact dans `index.html` ouvrent un nouveau message Gmail à `heritierbambu00@gmail.com` et une conversation WhatsApp au `+243 814 313 997`. Adapte leurs liens si tes coordonnées changent.
 
 ## Déploiement
 
