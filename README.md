@@ -1,6 +1,6 @@
 # Junior Heritier — Portfolio photographique
 
-Portfolio éditorial responsive réalisé en HTML, CSS et JavaScript natifs. Les photos sont hébergées sur Cloudinary. La connexion Google affiche le nom, le prénom, le nom de famille, l’adresse e-mail, sa vérification et l’image du profil ; Apple et GitHub sont indiqués comme prochaines options.
+Portfolio éditorial responsive réalisé en HTML, CSS et JavaScript natifs. Les photos sont hébergées sur Cloudinary. La page présente aussi la démarche photographique, les intentions de prise de vue, une courte présentation de HERITIER JR et une invitation à discuter d’un projet, sans ajouter de nouvelles images. La connexion Google affiche le nom, le prénom, le nom de famille, l’adresse e-mail, sa vérification et l’image du profil ; Apple et GitHub sont indiqués comme prochaines options.
 
 ## Lancer le site
 
