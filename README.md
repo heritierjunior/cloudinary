@@ -1,6 +1,6 @@
 # Junior Heritier — Portfolio photographique
 
-Portfolio éditorial responsive réalisé en HTML, CSS et JavaScript natifs. Les photos sont hébergées sur Cloudinary. La connexion Google affiche le nom, l’adresse e-mail et l’image du profil ; Apple et GitHub sont indiqués comme prochaines options.
+Portfolio éditorial responsive réalisé en HTML, CSS et JavaScript natifs. Les photos sont hébergées sur Cloudinary. La connexion Google affiche le nom, le prénom, le nom de famille, l’adresse e-mail, sa vérification et l’image du profil ; Apple et GitHub sont indiqués comme prochaines options.
 
 ## Lancer le site
 
@@ -23,6 +23,10 @@ Une origine ne contient ni chemin de page ni barre oblique finale. Si l’écran
 
 L’identifiant client OAuth est public et peut être inclus dans le code navigateur ; **ne publie jamais de client secret**. Apple et GitHub utilisent leurs propres fournisseurs et nécessitent chacun une configuration séparée ; les boutons restent désactivés tant qu’ils ne sont pas configurés.
 
+### Profil et session
+
+Après vérification du profil Google, une animation accompagne la préparation des photos Cloudinary avant l’ouverture de la galerie. La photo de profil dans l’en-tête ouvre les informations du compte. « Se déconnecter » ferme la session de cet onglet.
+
 ### Limite de sécurité
 
 Cette version statique est une démonstration de connexion et d’affichage de profil, pas un contrôle d’accès sécurisé. Le profil de session est conservé dans `sessionStorage`, modifiable par l’utilisateur, et les URL Cloudinary des photos sont publiques. La connexion n’empêche donc pas un visiteur d’accéder directement aux images. Pour protéger réellement du contenu, il faut un backend qui valide les jetons Google et délivre les images depuis un stockage privé. La connexion ne crée pas d’inscription à une newsletter.
@@ -42,10 +46,12 @@ Le dossier `ortfolio` (sans le premier `p`) est intentionnel : il correspond au 
 
 Les URL Cloudinary appliquent `f_auto` et `q_auto` pour choisir le format et la qualité. Les transformations `w_...`, `c_fill`, `g_auto` et `ar_4:5` adaptent les vignettes. `srcset` et `sizes` laissent le navigateur choisir une largeur responsive ; `loading="lazy"` et `decoding="async"` diffèrent le chargement. La lightbox demande une version plus large avec `c_limit`.
 
+La galerie permet aussi de rechercher dans les titres, descriptions et catégories, de trier les photos par date d’ajout ou par titre, de conserver des favoris sur l’appareil (`localStorage`) et de partager un lien ouvrant une photo précise.
+
 ## Personnaliser
 
-- Modifie les titres, descriptions ou catégories des photos dans le tableau `photos` de `script.js`.
-- Les filtres disponibles sont « Tout », « Portrait » et « Urbain ».
+- Modifie les titres, descriptions, catégories ou dates d’ajout (`uploadedAt`) dans le tableau `photos` de `script.js`.
+- Les filtres disponibles sont « Tout », « Portrait », « Urbain » et « Favoris ».
 - Remplace `bonjour@exemple.com` et adapte le titre, le logo et les textes dans `index.html`.
 
 ## Déploiement

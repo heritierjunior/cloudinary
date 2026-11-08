@@ -6,6 +6,8 @@ const message = document.querySelector("#auth-message");
 const googleButton = document.querySelector('[data-provider="google"]');
 const profileButton = document.querySelector("#profile-button");
 const accountDialog = document.querySelector("#account-dialog");
+const pageLoader = document.querySelector("#page-loader");
+const pageLoaderMessage = document.querySelector("#page-loader-message");
 let tokenClient;
 
 function showMessage(text, isError = false) {
@@ -53,15 +55,53 @@ function showProfile(profile) {
   );
   document.querySelector("#account-name").textContent = profile.name;
   document.querySelector("#account-email").textContent = profile.email;
-  document.querySelector("#account-provider").textContent = "Connecté avec Google";
+  document.querySelector("#account-given-name").textContent = profile.givenName || "Non indiqué";
+  document.querySelector("#account-family-name").textContent = profile.familyName || "Non indiqué";
+  document.querySelector("#account-email-status").textContent = profile.emailVerified
+    ? "Vérifiée par Google"
+    : "Non vérifiée";
+  document.querySelector("#account-provider").textContent = profile.provider || "Google";
   setAvatar(
     document.querySelector("#account-avatar"),
     document.querySelector("#account-initials"),
     profile.picture,
     profile.name
   );
+}
+
+function delay(milliseconds) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function revealPortfolio(profile) {
+  showProfile(profile);
+  pageLoaderMessage.textContent = "Préparation de ta galerie…";
+  pageLoader.hidden = false;
   gate.hidden = true;
   document.body.classList.remove("auth-locked");
+
+  const preparation = typeof window.preparePortfolioGallery === "function"
+    ? window.preparePortfolioGallery()
+    : Promise.resolve({ loaded: 0, total: 0 });
+  const [images] = await Promise.all([
+    Promise.race([
+      preparation,
+      delay(10000).then(() => ({ loaded: 0, total: 1, timedOut: true }))
+    ]),
+    delay(650)
+  ]);
+
+  if (images.timedOut || (images.total > 0 && images.loaded < images.total)) {
+    pageLoaderMessage.textContent = images.timedOut
+      ? "Le chargement des images prend plus de temps que prévu. Ouverture de la galerie…"
+      : `Certaines images ne répondent pas (${images.loaded}/${images.total}). Ouverture de la galerie…`;
+    await delay(1100);
+  }
+
+  pageLoader.hidden = true;
+  if (typeof window.openSharedPortfolioPhoto === "function") {
+    window.openSharedPortfolioPhoto();
+  }
 }
 
 function loadGoogleIdentityServices() {
@@ -103,7 +143,7 @@ async function initializeGoogleSignIn() {
     });
 
     googleButton.disabled = false;
-    showMessage("Choisis Google pour continuer. La connexion n’inscrit pas à une newsletter.");
+    showMessage("Le sélecteur de compte Google est prêt.");
   } catch (error) {
     googleButton.disabled = true;
     showMessage(error.message, true);
@@ -135,12 +175,17 @@ async function handleGoogleResponse(response) {
     const savedProfile = {
       name: profile.name || profile.email,
       email: profile.email,
-      picture: profile.picture || ""
+      picture: profile.picture || "",
+      givenName: profile.given_name || "",
+      familyName: profile.family_name || "",
+      emailVerified: profile.email_verified === true,
+      provider: "Google"
     };
     sessionStorage.setItem(PROFILE_KEY, JSON.stringify(savedProfile));
-    showProfile(savedProfile);
+    await revealPortfolio(savedProfile);
   } catch (error) {
     googleButton.disabled = false;
+    pageLoader.hidden = true;
     showMessage(error.message, true);
   }
 }
@@ -164,7 +209,7 @@ document.querySelector("#logout-button").addEventListener("click", () => {
 
 const savedProfile = getSavedProfile();
 if (savedProfile) {
-  showProfile(savedProfile);
+  revealPortfolio(savedProfile);
 } else {
   initializeGoogleSignIn();
 }

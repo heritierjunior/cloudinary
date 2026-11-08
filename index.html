@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#11110f">
+    <meta name="theme-color" content="#f5f2ec">
     <meta name="description" content="Portraits et instants de vie — un portfolio photographique.">
     <title>Portfolio photo — Galerie</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
           </button>
         </div>
         <p class="auth-message" id="auth-message" role="status" aria-live="polite">Vérification de la configuration de connexion…</p>
-        <p class="auth-privacy">La connexion affiche ton profil. Elle ne t’inscrit pas à une newsletter.</p>
+        <p class="auth-privacy">Ta connexion sert uniquement à ouvrir le portfolio et afficher ton profil. Aucune inscription à une newsletter.</p>
       </div>
     </section>
 
@@ -79,13 +79,29 @@
           <p class="gallery-count" id="gallery-count" aria-live="polite"></p>
         </div>
 
+        <div class="gallery-tools">
+          <label class="search-control">
+            <span class="sr-only">Rechercher une photo</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <input id="photo-search" type="search" placeholder="Rechercher une photo…" autocomplete="off">
+          </label>
+          <label class="sort-control">Trier
+            <select id="photo-sort" aria-label="Trier les photos">
+              <option value="recent">Plus récentes</option>
+              <option value="title">Titre A–Z</option>
+            </select>
+          </label>
+        </div>
+
         <div class="filters" role="group" aria-label="Filtrer les photos">
           <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tout <span>04</span></button>
           <button class="filter-button" type="button" data-filter="portrait" aria-pressed="false">Portrait</button>
           <button class="filter-button" type="button" data-filter="urbain" aria-pressed="false">Urbain</button>
+          <button class="filter-button favorites-filter" id="favorites-filter" type="button" aria-pressed="false">Favoris <span id="favorites-count">00</span></button>
         </div>
 
         <div class="gallery-grid" id="gallery-grid" aria-live="polite"></div>
+        <p class="gallery-feedback" id="gallery-feedback" role="status" aria-live="polite"></p>
       </section>
 
       <section class="about-section" id="apropos">
@@ -133,8 +149,18 @@
           <p class="account-email" id="account-email"></p>
         </div>
       </div>
-      <p class="account-provider" id="account-provider"></p>
+      <div class="account-details">
+        <div class="account-detail"><span>Prénom</span><strong id="account-given-name">—</strong></div>
+        <div class="account-detail"><span>Nom</span><strong id="account-family-name">—</strong></div>
+        <div class="account-detail"><span>E-mail</span><strong id="account-email-status"></strong></div>
+        <div class="account-detail"><span>Connecté avec</span><strong id="account-provider">Google</strong></div>
+      </div>
     </dialog>
+    <div class="page-loader" id="page-loader" role="status" aria-live="polite" hidden>
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <p id="page-loader-message">Préparation de ta galerie…</p>
+    </div>
+    <p class="sr-only" id="action-feedback" role="status" aria-live="polite"></p>
     <script type="module" src="auth.js"></script>
   </body>
 </html>
