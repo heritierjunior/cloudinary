@@ -52,7 +52,7 @@ La galerie permet aussi de rechercher dans les titres, descriptions et catégori
 
 - Modifie les titres, descriptions, catégories ou dates d’ajout (`uploadedAt`) dans le tableau `photos` de `script.js`.
 - Les filtres disponibles sont « Tout », « Portrait », « Urbain » et « Favoris ».
-- Remplace `bonjour@exemple.com` et adapte le titre, le logo et les textes dans `index.html`.
+- Les liens de contact dans `index.html` ouvrent l’adresse `heritierbambu00@gmail.com` et le numéro `+243 814 313 997`. Adapte-les si tes coordonnées changent.
 
 ## Déploiement
 
