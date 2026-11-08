@@ -1,59 +1,109 @@
-# Junior Heritier — Portfolio photographique
+<div align="center">
 
-Portfolio éditorial responsive réalisé en HTML, CSS et JavaScript natifs. Les photos sont hébergées sur Cloudinary. La page présente aussi la démarche photographique, les intentions de prise de vue, une courte présentation de HERITIER JR et une invitation à discuter d’un projet, sans ajouter de nouvelles images. La connexion Google affiche le nom, le prénom, le nom de famille, l’adresse e-mail, sa vérification et l’image du profil ; Apple et GitHub sont indiqués comme prochaines options.
+# HERITIER JR · Portfolio photo
 
-## Lancer le site
+### Des visages. Des histoires.
 
-Depuis le dossier du projet, démarre un serveur local :
+J’ai créé ce portfolio pour présenter mon travail photographique dans une galerie élégante, immersive et adaptée à tous les écrans. J’y partage une sélection de portraits hébergés sur Cloudinary, ainsi que ma démarche et ma façon d’aborder une séance photo.
+
+[Voir le site](https://cloudinary-one-flame.vercel.app) · [Voir le dépôt GitHub](https://github.com/heritierjunior/cloudinary)
+
+![HTML5](https://img.shields.io/badge/HTML5-structure-E76F51?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-responsive-5271A3?style=flat-square&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-E3B341?style=flat-square&logo=javascript&logoColor=181818)
+![Cloudinary](https://img.shields.io/badge/Images-Cloudinary-7C4DFF?style=flat-square&logo=cloudinary&logoColor=white)
+
+</div>
+
+---
+
+## Mon espace Cloudinary
+
+J’utilise Cloudinary pour héberger et diffuser les images de mon portfolio. Cette capture montre ma bibliothèque de médias dans la console Cloudinary.
+
+<p align="center">
+  <img src="./docs/images/cloudinary-media-library.png" alt="Capture de ma bibliothèque de médias Cloudinary" width="100%">
+</p>
+
+## À propos du projet
+
+J’ai réalisé ce site en **HTML, CSS et JavaScript natifs**, sans framework. Mon objectif était de mettre les portraits au premier plan tout en créant une expérience complète : une introduction à mon univers, une galerie interactive, une présentation de ma démarche et des moyens simples de me contacter.
+
+### Ce que j’ai créé
+
+- Une galerie de quatre portraits, avec filtres par catégorie, recherche et tri.
+- Une mosaïque responsive et une visionneuse plein écran avec titre et description.
+- Des favoris enregistrés dans le navigateur et le partage d’un lien vers une photo précise.
+- Des sections éditoriales pour présenter mon approche et mon travail, sans ajouter d’images décoratives.
+- Un profil de compte Google avec nom, adresse e-mail et photo de profil.
+- Des boutons de contact qui ouvrent un message Gmail ou une conversation WhatsApp.
+- Une interface adaptée aux ordinateurs et aux téléphones.
+
+## Comment j’utilise Cloudinary
+
+Les images de la galerie sont hébergées sur Cloudinary : je ne stocke donc pas de copies des photos dans ce dépôt. Dans `script.js`, je construis les URL d’images à partir de mon cloud name et des Public IDs.
+
+J’applique des transformations directement dans les URL Cloudinary :
+
+| Transformation | Utilisation |
+| --- | --- |
+| `f_auto` et `q_auto` | Laisser Cloudinary choisir le format et une qualité adaptée. |
+| `w_...` | Demander la largeur nécessaire selon l’usage. |
+| `c_fill`, `g_auto`, `ar_4:5` | Recadrer les vignettes dans un format cohérent en gardant un cadrage automatique. |
+| `c_limit` | Limiter la taille de l’image ouverte dans la visionneuse. |
+
+J’ajoute aussi `srcset` et `sizes` pour laisser le navigateur choisir une taille responsive. `loading="lazy"` et `decoding="async"` évitent de charger et décoder toutes les images dès l’ouverture de la page.
+
+Mon cloud name est `zodnyfht`. Les Public IDs utilisés sont :
+
+| Photo | Public ID |
+| --- | --- |
+| Portrait à deux | `portfolio/portrait-duo` |
+| Portrait avec casquette | `portfolio/portrait-regard` |
+| Portrait en veston | `ortfolio/portrait-elegance` |
+| Portrait urbain | `portfolio/portrait-urbain` |
+
+Le dossier `ortfolio` est écrit ainsi dans Cloudinary ; je conserve donc ce Public ID tel quel dans le code.
+
+## Connexion Google
+
+J’ai ajouté Google Identity Services pour permettre à la personne qui visite le site de choisir un compte Google et afficher son profil dans l’interface. Après la connexion, le site présente le nom, l’adresse e-mail et la photo de profil. Les boutons Apple et GitHub sont affichés comme options à venir, mais ne sont pas encore configurés.
+
+Pour tester la connexion sur un autre domaine, il faut ajouter **l’origine exacte du site** dans Google Cloud Console → **API et services → Identifiants → Origines JavaScript autorisées**. Par exemple, pour GitHub Pages, l’origine est `https://heritierjunior.github.io` (sans chemin ni barre oblique finale).
+
+> **À savoir :** le site est statique. La connexion Google sert ici à présenter un profil ; elle ne protège pas l’accès aux photos. Les URL Cloudinary sont publiques et peuvent être consultées indépendamment de la connexion. Il ne faut jamais ajouter de secret OAuth ou de clé privée dans le code du navigateur.
+
+## Lancer le site sur mon ordinateur
+
+Le projet n’a pas besoin d’installation de dépendances ni de compilation. Depuis le dossier du projet, je lance un serveur local :
 
 ```bash
 python -m http.server 8000
 ```
 
-Ouvre ensuite <http://localhost:8000>. La connexion Google ne fonctionne pas en ouvrant directement `index.html` avec `file://`.
+Puis j’ouvre <http://localhost:8000>. Le flux Google ne fonctionne pas en ouvrant directement `index.html` avec une adresse `file://`.
 
-## Connexion Google
+Pour que la connexion locale fonctionne, j’ajoute `http://localhost:8000` et `http://127.0.0.1:8000` aux origines JavaScript autorisées du client OAuth.
 
-Le projet utilise Google Identity Services et le client OAuth Web déjà présent dans `auth.js`. Dans Google Cloud Console → **API et services → Identifiants**, ajoute aux **Origines JavaScript autorisées** chacune des origines utilisées :
+## Structure du projet
 
-- `http://localhost:8000` et `http://127.0.0.1:8000` pour les tests locaux ;
-- l’origine du site une fois déployé, par exemple `https://nom-utilisateur.github.io` pour GitHub Pages.
-
-Une origine ne contient ni chemin de page ni barre oblique finale. Si l’écran de consentement est en mode test, ajoute aussi les comptes Google à autoriser dans la liste des utilisateurs test.
-
-L’identifiant client OAuth est public et peut être inclus dans le code navigateur ; **ne publie jamais de client secret**. Apple et GitHub utilisent leurs propres fournisseurs et nécessitent chacun une configuration séparée ; les boutons restent désactivés tant qu’ils ne sont pas configurés.
-
-### Profil et session
-
-Après vérification du profil Google, une animation accompagne la préparation des photos Cloudinary avant l’ouverture de la galerie. La photo de profil dans l’en-tête ouvre les informations du compte. « Se déconnecter » ferme la session de cet onglet.
-
-### Limite de sécurité
-
-Cette version statique est une démonstration de connexion et d’affichage de profil, pas un contrôle d’accès sécurisé. Le profil de session est conservé dans `sessionStorage`, modifiable par l’utilisateur, et les URL Cloudinary des photos sont publiques. La connexion n’empêche donc pas un visiteur d’accéder directement aux images. Pour protéger réellement du contenu, il faut un backend qui valide les jetons Google et délivre les images depuis un stockage privé. La connexion ne crée pas d’inscription à une newsletter.
-
-## Cloudinary
-
-Le cloud name `zodnyfht` et les identifiants publics sont configurés dans `script.js` :
-
-| Photo | Public ID |
+| Fichier ou dossier | Rôle |
 | --- | --- |
-| Portrait en studio | `portfolio/portrait-duo` |
-| Portrait avec casquette | `portfolio/portrait-regard` |
-| Portrait en veston | `ortfolio/portrait-elegance` |
-| Portrait urbain | `portfolio/portrait-urbain` |
+| `index.html` | Structure des pages, de la galerie, du profil et des sections éditoriales. |
+| `styles.css` | Identité visuelle, mise en page responsive et états interactifs. |
+| `script.js` | Photos Cloudinary, filtres, recherche, favoris, partage et visionneuse. |
+| `auth.js` | Connexion Google, affichage du profil et déconnexion. |
+| `docs/images/` | Capture Cloudinary intégrée à ce README. |
 
-Le dossier `ortfolio` (sans le premier `p`) est intentionnel : il correspond au Public ID de la photo tel qu’il apparaît dans son URL Cloudinary. Les photos ne sont pas stockées dans le dépôt.
+## Me contacter
 
-Les URL Cloudinary appliquent `f_auto` et `q_auto` pour choisir le format et la qualité. Les transformations `w_...`, `c_fill`, `g_auto` et `ar_4:5` adaptent les vignettes. `srcset` et `sizes` laissent le navigateur choisir une largeur responsive ; `loading="lazy"` et `decoding="async"` diffèrent le chargement. La lightbox demande une version plus large avec `c_limit`.
+Pour discuter d’une séance photo, j’ai relié les boutons du site à mes coordonnées :
 
-La galerie permet aussi de rechercher dans les titres, descriptions et catégories, de trier les photos par date d’ajout ou par titre, de conserver des favoris sur l’appareil (`localStorage`) et de partager un lien ouvrant une photo précise.
+- **E-mail :** [heritierbambu00@gmail.com](mailto:heritierbambu00@gmail.com)
+- **WhatsApp :** [+243 814 313 997](https://wa.me/243814313997)
 
-## Personnaliser
+---
 
-- Modifie les titres, descriptions, catégories ou dates d’ajout (`uploadedAt`) dans le tableau `photos` de `script.js`.
-- Les filtres disponibles sont « Tout », « Portrait », « Urbain » et « Favoris ».
-- Les boutons de contact dans `index.html` ouvrent un nouveau message Gmail à `heritierbambu00@gmail.com` et une conversation WhatsApp au `+243 814 313 997`. Adapte leurs liens si tes coordonnées changent.
-
-## Déploiement
-
-Le portfolio est statique et ne nécessite ni compilation ni backend pour être hébergé. Publie le dépôt avec GitHub Pages, Vercel ou un autre hébergeur statique. Ajoute l’origine publiée aux origines JavaScript autorisées du client OAuth Google, puis indique dans cette section le lien du dépôt et celui du site déployé.
+<div align="center">
+  Réalisé par <strong>HERITIER JR</strong> · Portfolio photographique
+</div>
