@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11110f">
+    <meta name="description" content="Portraits et instants de vie — un portfolio photographique.">
+    <title>Portfolio photo — Galerie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body class="auth-locked">
+    <section class="auth-gate" id="auth-gate" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <a class="wordmark auth-wordmark" href="#accueil" aria-label="Portfolio photo">PH<span>.</span></a>
+        <p class="eyebrow">PORTFOLIO PHOTOGRAPHIQUE</p>
+        <h1 id="auth-title">Des histoires à découvrir<span class="accent">.</span></h1>
+        <p class="auth-intro">Connecte-toi avec ton compte Google pour découvrir la galerie et afficher les informations de ton profil.</p>
+        <div class="auth-providers" aria-label="Choisir un fournisseur de connexion">
+          <button class="auth-provider" type="button" data-provider="google">
+            <span class="provider-icon google-icon" aria-hidden="true">G</span>
+            Continuer avec Google
+          </button>
+          <button class="auth-provider" type="button" disabled title="Connexion Apple à configurer séparément">
+            <span class="provider-icon apple-icon" aria-hidden="true">A</span>
+            Apple — bientôt
+          </button>
+          <button class="auth-provider" type="button" disabled title="Connexion GitHub à configurer séparément">
+            <span class="provider-icon github-icon" aria-hidden="true">GH</span>
+            GitHub — bientôt
+          </button>
+        </div>
+        <p class="auth-message" id="auth-message" role="status" aria-live="polite">Vérification de la configuration de connexion…</p>
+        <p class="auth-privacy">La connexion affiche ton profil. Elle ne t’inscrit pas à une newsletter.</p>
+      </div>
+    </section>
+
+    <header class="site-header">
+      <a class="wordmark" href="#accueil" aria-label="Portfolio photo, accueil">PH<span>.</span></a>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <a href="#galerie">Galerie</a>
+        <a href="#apropos">À propos</a>
+      </nav>
+      <div class="account-actions">
+        <button class="profile-button" id="profile-button" type="button" aria-label="Afficher les informations du compte">
+          <span class="profile-avatar">
+            <img id="header-avatar" alt="" referrerpolicy="no-referrer" hidden>
+            <span class="avatar-initials" id="header-initials" aria-hidden="true">?</span>
+          </span>
+          <span class="profile-name" id="header-name">Compte</span>
+        </button>
+        <button class="logout-button" id="logout-button" type="button">Se déconnecter</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="accueil">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot"></span> PHOTOGRAPHIE · PORTRAITS &amp; HISTOIRES</p>
+          <h1>Des visages.<br>Des histoires<span class="accent">.</span></h1>
+          <p class="hero-description">Je photographie les personnes et les instants qui méritent qu’on s’y attarde.</p>
+          <a class="text-link" href="#galerie">Découvrir mon travail <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-aside" aria-label="Présentation">
+          <span class="hero-index">01 — 04</span>
+          <p>La photographie comme rencontre.<br>Un regard, une lumière, une histoire.</p>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="galerie">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PORTFOLIO SÉLECTIONNÉ</p>
+            <h2>Instants choisis<span class="accent">.</span></h2>
+          </div>
+          <p class="gallery-count" id="gallery-count" aria-live="polite"></p>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filtrer les photos">
+          <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tout <span>04</span></button>
+          <button class="filter-button" type="button" data-filter="portrait" aria-pressed="false">Portrait</button>
+          <button class="filter-button" type="button" data-filter="urbain" aria-pressed="false">Urbain</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="about-section" id="apropos">
+        <p class="eyebrow">DERRIÈRE L’OBJECTIF</p>
+        <div class="about-content">
+          <h2>Capturer l’essentiel,<br><em>simplement.</em></h2>
+          <div>
+            <p>Ce portfolio rassemble des portraits sincères et des instants qui méritent qu’on s’y attarde. J’aime la lumière naturelle et les images qui racontent quelque chose sans avoir besoin de mots.</p>
+            <a class="text-link" href="mailto:bonjour@exemple.com">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="wordmark" href="#accueil">PH<span>.</span></a>
+      <p>© <span id="current-year"></span> Portfolio photo · Fait avec intention.</p>
+      <a href="#accueil">Retour en haut ↑</a>
+    </footer>
+
+    <dialog class="lightbox" id="lightbox" aria-label="Photo en plein écran">
+      <button class="lightbox-close" type="button" aria-label="Fermer la photo">×</button>
+      <button class="lightbox-previous" type="button" aria-label="Photo précédente">←</button>
+      <figure class="lightbox-figure">
+        <img class="lightbox-image" alt="">
+        <figcaption>
+          <span class="lightbox-title"></span>
+          <span class="lightbox-description"></span>
+        </figcaption>
+      </figure>
+      <button class="lightbox-next" type="button" aria-label="Photo suivante">→</button>
+    </dialog>
+
+    <dialog class="account-dialog" id="account-dialog" aria-labelledby="account-title">
+      <button class="account-close" id="account-close" type="button" aria-label="Fermer">×</button>
+      <p class="eyebrow">TON ESPACE</p>
+      <h2 id="account-title">Informations du compte</h2>
+      <div class="account-profile">
+        <span class="account-avatar">
+          <img id="account-avatar" alt="" referrerpolicy="no-referrer" hidden>
+          <span class="avatar-initials" id="account-initials" aria-hidden="true">?</span>
+        </span>
+        <div>
+          <p class="account-name" id="account-name"></p>
+          <p class="account-email" id="account-email"></p>
+        </div>
+      </div>
+      <p class="account-provider" id="account-provider"></p>
+    </dialog>
+    <script type="module" src="auth.js"></script>
+  </body>
+</html>
