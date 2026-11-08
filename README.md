@@ -32,7 +32,9 @@ J’ai réalisé ce site en **HTML, CSS et JavaScript natifs**, sans framework. 
 ### Ce que j’ai créé
 
 - Une galerie de quatre portraits, avec filtres par catégorie, recherche et tri.
-- Une mosaïque responsive et une visionneuse plein écran avec titre et description.
+- Une mosaïque responsive ; chaque photo s’ouvre dans une fiche détaillée avec titre, description, catégorie, date et Public ID Cloudinary.
+- Des actions depuis la fiche photo : précédent/suivant, favoris, partage, copie du Public ID ou de l’URL, ouverture de l’image Cloudinary et téléchargement.
+- Un menu hamburger sur téléphone pour naviguer entre la galerie et la présentation.
 - Des favoris enregistrés dans le navigateur et le partage d’un lien vers une photo précise.
 - Des sections éditoriales pour présenter mon approche et mon travail, sans ajouter d’images décoratives.
 - Un profil de compte Google avec nom, adresse e-mail et photo de profil.

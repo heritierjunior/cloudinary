@@ -38,12 +38,21 @@ const searchInput = document.querySelector("#photo-search");
 const sortSelect = document.querySelector("#photo-sort");
 const favoritesFilter = document.querySelector("#favorites-filter");
 const favoritesCount = document.querySelector("#favorites-count");
+const menuToggle = document.querySelector("#menu-toggle");
+const mainNavigation = document.querySelector("#main-navigation");
 const galleryFeedback = document.querySelector("#gallery-feedback");
 const actionFeedback = document.querySelector("#action-feedback");
 const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxTitle = document.querySelector(".lightbox-title");
 const lightboxDescription = document.querySelector(".lightbox-description");
+const lightboxFavorite = document.querySelector("#lightbox-favorite");
+const lightboxCategory = document.querySelector(".lightbox-category");
+const lightboxDate = document.querySelector(".lightbox-date");
+const lightboxPublicId = document.querySelector(".lightbox-public-id");
+const lightboxCount = document.querySelector(".lightbox-count");
+const lightboxCloudinaryLink = document.querySelector("#lightbox-open-cloudinary");
+const lightboxDownloadLink = document.querySelector("#lightbox-download");
 let visiblePhotos = [...photos];
 let activePhotoIndex = 0;
 let activeFilter = "all";
@@ -126,7 +135,7 @@ function renderGallery() {
     const button = document.createElement("button");
     button.className = "photo-button";
     button.type = "button";
-    button.setAttribute("aria-label", `Ouvrir la photo : ${photo.title}`);
+    button.setAttribute("aria-label", `Voir la photo et ses détails : ${photo.title}`);
 
     const image = document.createElement("img");
     image.src = imageUrl(photo, 480);
@@ -145,7 +154,10 @@ function renderGallery() {
     category.className = "photo-category";
     category.textContent = photo.category;
     meta.append(title, category);
-    button.append(image, meta);
+    const openHint = document.createElement("span");
+    openHint.className = "photo-open-hint";
+    openHint.textContent = "Voir les détails ↗";
+    button.append(image, meta, openHint);
     button.addEventListener("click", () => openLightbox(index));
 
     const actions = document.createElement("div");
@@ -180,7 +192,7 @@ function renderGallery() {
   updateFavoritesCount();
 }
 
-function toggleFavorite(photo) {
+function toggleFavorite(photo, fromLightbox = false) {
   if (favorites.has(photo.publicId)) {
     favorites.delete(photo.publicId);
   } else {
@@ -188,6 +200,16 @@ function toggleFavorite(photo) {
   }
   saveFavorites();
   renderGallery();
+  if (fromLightbox) {
+    const updatedIndex = visiblePhotos.findIndex((visiblePhoto) => visiblePhoto.publicId === photo.publicId);
+    if (updatedIndex < 0) {
+      lightbox.close();
+      actionFeedback.textContent = `« ${photo.title} » a été retirée des favoris.`;
+      return;
+    }
+    activePhotoIndex = updatedIndex;
+    updateLightbox();
+  }
 }
 
 async function sharePhoto(photo) {
@@ -219,10 +241,25 @@ function openLightbox(index) {
 function updateLightbox() {
   const photo = visiblePhotos[activePhotoIndex];
   if (!photo) return;
-  lightboxImage.src = imageUrl(photo, 1800, true);
+  const fullImageUrl = imageUrl(photo, 1800, true);
+  const downloadUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_auto,w_2400,c_limit,fl_attachment/${photo.publicId}`;
+  lightboxImage.src = fullImageUrl;
   lightboxImage.alt = `${photo.title} — ${photo.description}`;
   lightboxTitle.textContent = photo.title;
   lightboxDescription.textContent = photo.description;
+  lightboxCategory.textContent = photo.category;
+  lightboxDate.textContent = new Date(photo.uploadedAt * 1000).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+  lightboxPublicId.textContent = photo.publicId;
+  lightboxCount.textContent = `${String(activePhotoIndex + 1).padStart(2, "0")} / ${String(visiblePhotos.length).padStart(2, "0")}`;
+  const isFavorite = favorites.has(photo.publicId);
+  lightboxFavorite.textContent = isFavorite ? "♥ Retirer des favoris" : "♡ Ajouter aux favoris";
+  lightboxFavorite.setAttribute("aria-pressed", String(isFavorite));
+  lightboxCloudinaryLink.href = fullImageUrl;
+  lightboxDownloadLink.href = downloadUrl;
 }
 
 function changePhoto(direction) {
@@ -305,9 +342,55 @@ favoritesFilter.addEventListener("click", () => {
 
 searchInput.addEventListener("input", renderGallery);
 sortSelect.addEventListener("change", renderGallery);
+function closeMobileMenu() {
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+  mainNavigation.classList.remove("is-open");
+}
+
+menuToggle.addEventListener("click", () => {
+  const isExpanded = menuToggle.getAttribute("aria-expanded") === "true";
+  menuToggle.setAttribute("aria-expanded", String(!isExpanded));
+  menuToggle.setAttribute("aria-label", isExpanded ? "Ouvrir le menu" : "Fermer le menu");
+  mainNavigation.classList.toggle("is-open", !isExpanded);
+});
+mainNavigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMobileMenu));
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".site-header")) closeMobileMenu();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMobileMenu();
+});
 document.querySelector(".lightbox-close").addEventListener("click", () => lightbox.close());
 document.querySelector(".lightbox-previous").addEventListener("click", () => changePhoto(-1));
 document.querySelector(".lightbox-next").addEventListener("click", () => changePhoto(1));
+lightboxFavorite.addEventListener("click", () => toggleFavorite(visiblePhotos[activePhotoIndex], true));
+document.querySelector("#lightbox-share").addEventListener("click", () => {
+  const photo = visiblePhotos[activePhotoIndex];
+  if (photo) sharePhoto(photo);
+});
+document.querySelector("#lightbox-copy-id").addEventListener("click", async () => {
+  const photo = visiblePhotos[activePhotoIndex];
+  if (!photo) return;
+  try {
+    await navigator.clipboard.writeText(photo.publicId);
+    actionFeedback.textContent = `Public ID « ${photo.publicId} » copié.`;
+  } catch (error) {
+    console.error("Impossible de copier le Public ID Cloudinary.", error);
+    actionFeedback.textContent = "La copie a échoué. Vérifie les autorisations du navigateur et réessaie.";
+  }
+});
+document.querySelector("#lightbox-copy-url").addEventListener("click", async () => {
+  const photo = visiblePhotos[activePhotoIndex];
+  if (!photo) return;
+  try {
+    await navigator.clipboard.writeText(lightboxCloudinaryLink.href);
+    actionFeedback.textContent = `URL Cloudinary de « ${photo.title} » copiée.`;
+  } catch (error) {
+    console.error("Impossible de copier l’URL Cloudinary.", error);
+    actionFeedback.textContent = "La copie a échoué. Vérifie les autorisations du navigateur et réessaie.";
+  }
+});
 lightbox.addEventListener("click", (event) => {
   if (event.target === lightbox) lightbox.close();
 });

@@ -46,7 +46,10 @@
         <span class="wordmark">PH<span>.</span></span>
         <span class="brand-owner">HERITIER JR</span>
       </a>
-      <nav class="main-nav" aria-label="Navigation principale">
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-controls="main-navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="main-navigation" aria-label="Navigation principale">
         <a href="#galerie">Galerie</a>
         <a href="#apropos">À propos</a>
       </nav>
@@ -172,16 +175,31 @@
       <a href="#accueil">Retour en haut ↑</a>
     </footer>
 
-    <dialog class="lightbox" id="lightbox" aria-label="Photo en plein écran">
+    <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
       <button class="lightbox-close" type="button" aria-label="Fermer la photo">×</button>
       <button class="lightbox-previous" type="button" aria-label="Photo précédente">←</button>
       <figure class="lightbox-figure">
         <img class="lightbox-image" alt="">
-        <figcaption>
-          <span class="lightbox-title"></span>
-          <span class="lightbox-description"></span>
-        </figcaption>
       </figure>
+      <section class="lightbox-details" aria-label="Détails de la photo">
+        <p class="eyebrow">DÉTAILS DE L’IMAGE <span class="lightbox-count"></span></p>
+        <h2 class="lightbox-title" id="lightbox-title"></h2>
+        <p class="lightbox-description"></p>
+        <dl class="lightbox-metadata">
+          <div><dt>Catégorie</dt><dd class="lightbox-category"></dd></div>
+          <div><dt>Ajoutée le</dt><dd class="lightbox-date"></dd></div>
+          <div class="lightbox-public-id-row"><dt>Public ID Cloudinary</dt><dd class="lightbox-public-id"></dd></div>
+        </dl>
+        <p class="lightbox-navigation-hint">Utilise les flèches pour parcourir la galerie. Échap ferme cette fiche.</p>
+        <div class="lightbox-actions">
+          <button class="lightbox-action lightbox-favorite" id="lightbox-favorite" type="button" aria-pressed="false">♡ Ajouter aux favoris</button>
+          <button class="lightbox-action" id="lightbox-share" type="button">Partager la photo</button>
+          <button class="lightbox-action" id="lightbox-copy-id" type="button">Copier le Public ID</button>
+          <button class="lightbox-action" id="lightbox-copy-url" type="button">Copier l’URL Cloudinary</button>
+          <a class="lightbox-action" id="lightbox-open-cloudinary" href="#" target="_blank" rel="noopener noreferrer">Ouvrir sur Cloudinary ↗</a>
+          <a class="lightbox-action lightbox-download" id="lightbox-download" href="#">Télécharger l’image ↓</a>
+        </div>
+      </section>
       <button class="lightbox-next" type="button" aria-label="Photo suivante">→</button>
     </dialog>
 
